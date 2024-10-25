@@ -7,6 +7,7 @@ from django.views import View
 from sample_app import models
 from sample_app import tasks
 
+
 class PersonCreateView(View):
     def post(self, request, *args, **kwargs):
         person = models.Person(**json.loads(request.body))
@@ -30,7 +31,8 @@ class PersonReplaceView(View):
             raise Http404()
 
         return JsonResponse(status=201, data={"status": "published", "pk": person.pk})
-    
+
+
 class TestView(View):
     def get(self, request, *args, **kwargs):
         response = tasks.CalculatePriceTask.asap(price=10, quantity=2, discount=0.1)

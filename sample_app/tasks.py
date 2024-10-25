@@ -3,7 +3,14 @@ from functools import lru_cache
 import time
 from django.db.models import Model
 
-from django_cloud_tasks.tasks import PeriodicTask, RoutineTask, SubscriberTask, Task, ModelPublisherTask, TaskMetadata
+from django_cloud_tasks.tasks import (
+    PeriodicTask,
+    RoutineTask,
+    SubscriberTask,
+    Task,
+    ModelPublisherTask,
+    TaskMetadata,
+)
 from django_cloud_tasks.exceptions import DiscardTaskException
 from gcp_pilot.tasks import CloudTasks
 from google.cloud import tasks_v2
@@ -12,10 +19,11 @@ from google.cloud.tasks_v2.services.cloud_tasks.transports import (
 )
 import grpc
 
+
 class BaseAbstractTask(Task, abc.ABC):
     def run(self, **kwargs):
         raise NotImplementedError()  # TODO Allow inheriting from ABC
-    
+
     @classmethod
     @lru_cache()
     def _get_tasks_client(cls) -> CloudTasks:
@@ -23,13 +31,13 @@ class BaseAbstractTask(Task, abc.ABC):
         channel = grpc.insecure_channel("localhost:8123")
         transport = CloudTasksGrpcTransport(channel=channel)
         client = tasks_v2.CloudTasksClient(transport=transport)
-        parent = 'projects/my-project/locations/us-east4'
-        queue_name = parent + '/queues/tasks'
+        parent = "projects/my-project/locations/us-east4"
+        queue_name = parent + "/queues/tasks"
         try:
-            client.create_queue(parent=parent, queue={'name': queue_name})
+            client.create_queue(parent=parent, queue={"name": queue_name})
         except Exception as e:
             print(e)
-        
+
         cloud_tasks.client = client
         return cloud_tasks
 
@@ -41,9 +49,9 @@ class AnotherBaseAbstractTask(BaseAbstractTask, abc.ABC):
 
 class CalculatePriceTask(BaseAbstractTask):
     def run(self, price, quantity, discount):
-        print('Running!')
+        print("Running!")
         time.sleep(5)
-        print('Slept!')
+        print("Slept!")
         return price * quantity * (1 - discount)
 
 
@@ -122,7 +130,9 @@ class PublishPersonTask(ModelPublisherTask):
         return {"id": obj.pk, "name": obj.name}
 
     @classmethod
-    def build_message_attributes(cls, obj: Model, event: str, **kwargs) -> dict[str, str]:
+    def build_message_attributes(
+        cls, obj: Model, event: str, **kwargs
+    ) -> dict[str, str]:
         return {"any-custom-attribute": "yay!", "event": event}
 
 
