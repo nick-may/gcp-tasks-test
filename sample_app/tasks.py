@@ -25,9 +25,8 @@ logger = logging.getLogger(__name__)
 
 
 class BaseAbstractTask(Task, abc.ABC):
-    
     def run(self, **kwargs):
-        raise NotImplementedError()  
+        raise NotImplementedError()
 
     @classmethod
     @lru_cache()
@@ -50,7 +49,6 @@ class BaseAbstractTask(Task, abc.ABC):
         cloud_tasks.client = client
         return cloud_tasks
 
-    
 
 class AnotherBaseAbstractTask(BaseAbstractTask, abc.ABC):
     def run(self, **kwargs):
