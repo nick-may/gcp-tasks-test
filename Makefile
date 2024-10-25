@@ -1,7 +1,11 @@
-run_emulator:
-	docker run -p 8123:8123 ghcr.io/aertje/cloud-tasks-emulator:latest -host 0.0.0.0 -port 8123
+run:
+	docker compose up -d --build
 
-run_server:
-	export GCP_LOCATION=us-east4 && \
-	export GCP_PROJECT=my-project && \
-	python manage.py runserver localhost:8080
+makemigrations:
+	docker compose exec web python manage.py makemigrations
+
+migrate:
+	docker compose exec web python manage.py migrate
+
+createsuperuser:
+	docker compose exec web python manage.py createsuperuser --username root --email root@example.com 
