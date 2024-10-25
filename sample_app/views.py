@@ -20,5 +20,5 @@ class TriggerTaskView(View):
         print(response)
 
         return HttpResponse(
-            "<p>Task triggered successfully!</p><p>Task ID: {}</p>".format(response)
+            f"<p>Task triggered successfully!</p><p>Task ID: {response.task_id}</p>"
         )

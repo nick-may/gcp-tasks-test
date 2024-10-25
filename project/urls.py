@@ -9,6 +9,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("django_cloud_tasks.urls")),
     path("trigger-task/", views.TriggerTaskView.as_view(), name="trigger-task"),
+    path("__reload__/", include("django_browser_reload.urls")),
 ]
 
 if settings.DEBUG:

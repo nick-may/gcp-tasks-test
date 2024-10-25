@@ -2,7 +2,7 @@ services:
   web:
     build: .
     container_name: web
-    command: bash -c "python ./manage.py collectstatic --noinput && python ./manage.py migrate && gunicorn --bind 0.0.0.0:8080 --workers 1 --threads 8 --timeout 0 --reload project.wsgi:application"
+    command: bash -c "python ./manage.py collectstatic --noinput && python ./manage.py migrate && python ./manage.py runserver 0.0.0.0:8080"
     volumes:
       - .:/app
     ports:
