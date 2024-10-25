@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} {% load widget_tweaks %} {% load partials %} {% block content %}
 
 <div class="flex flex-col items-center mx-10 md:mx-20">
   <h1 class="prose-2xl mb-4">Trigger Task</h1>
@@ -20,6 +20,26 @@
     <button class="btn btn-primary mt-2" type="submit">Trigger Task</button>
   </form>
   <div id="response-message"></div>
+
+  <table class="table table-zebra table-lg">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Result</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="tasks-table-body">
+      {% for task in tasks %} {% partialdef tasks-partial inline=True %}
+      <tr>
+        <td>{{ task.id }}</td>
+        <td>{{ task.result|floatformat:2 }}</td>
+        <td>{{ task.status}}</td>
+      </tr>
+
+      {% endpartialdef %} {% endfor %}
+    </tbody>
+  </table>
 </div>
 
 {% endblock %}
