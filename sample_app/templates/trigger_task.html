@@ -21,12 +21,14 @@
   </form>
   <div id="response-message"></div>
 
-  <table class="table table-zebra table-lg">
+  <table class="table table-zebra table-md max-w-2xl">
     <thead>
       <tr>
         <th>ID</th>
         <th>Result</th>
         <th>Status</th>
+        <th>Created At</th>
+        <th>Updated At</th>
       </tr>
     </thead>
     <tbody id="tasks-table-body">
@@ -34,7 +36,9 @@
       <tr>
         <td>{{ task.id }}</td>
         <td>{{ task.result|floatformat:2 }}</td>
-        <td>{{ task.status}}</td>
+        <td>{{ task.status|title}}</td>
+        <td>{{ task.created_at }}</td>
+        <td>{{ task.updated_at }}</td>
       </tr>
 
       {% endpartialdef %} {% endfor %}
