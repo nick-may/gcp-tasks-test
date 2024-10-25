@@ -1,0 +1,17 @@
+{
+  "configurations": [
+    {
+      "type": "debugpy",
+      "request": "launch",
+      "name": "Launch Django App",
+      "program": "${workspaceFolder}/manage.py",
+      "args": ["runserver", "localhost:8080"],
+      "django": true,
+      "justMyCode": false,
+      "env": {
+        "GCP_LOCATION": "us-east4",
+        "GCP_PROJECT": "my-project"
+      }
+    }
+  ]
+}
