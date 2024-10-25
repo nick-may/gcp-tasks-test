@@ -1,40 +1,24 @@
-import json
-from django.db import transaction
-
-from django.http import JsonResponse, Http404
+from django.shortcuts import render
 from django.views import View
-
-from sample_app import models
-from sample_app import tasks
-
-
-class PersonCreateView(View):
-    def post(self, request, *args, **kwargs):
-        person = models.Person(**json.loads(request.body))
-        person.save()
-        return JsonResponse(status=201, data={"status": "published", "pk": person.pk})
+from django.http import HttpResponse
+from sample_app.tasks import CalculatePriceTask
 
 
-class PersonReplaceView(View):
-    @transaction.atomic
-    def post(self, request, *args, **kwargs):
-        payload = json.loads(request.body)
-        person_to_replace_id = payload.pop("person_to_replace_id")
-
-        person = models.Person(**payload)
-        person.save()
-
-        try:
-            to_delete = models.Person.objects.get(pk=person_to_replace_id)
-            to_delete.delete()
-        except models.Person.DoesNotExist:
-            raise Http404()
-
-        return JsonResponse(status=201, data={"status": "published", "pk": person.pk})
-
-
-class TestView(View):
+class TriggerTaskView(View):
     def get(self, request, *args, **kwargs):
-        response = tasks.CalculatePriceTask.asap(price=10, quantity=2, discount=0.1)
+        return render(request, "trigger_task.html")
+
+    def post(self, request, *args, **kwargs):
+        price = request.POST.get("price")
+        quantity = request.POST.get("quantity")
+        discount = request.POST.get("discount")
+
+        # Trigger the task
+        response = CalculatePriceTask.asap(
+            price=float(price), quantity=int(quantity), discount=float(discount)
+        )
         print(response)
-        return JsonResponse(data={"status": "ok"})
+
+        return HttpResponse(
+            "<p>Task triggered successfully!</p><p>Task ID: {}</p>".format(response)
+        )

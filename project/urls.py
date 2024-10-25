@@ -8,9 +8,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("django_cloud_tasks.urls")),
-    path("create-person", views.PersonCreateView.as_view()),
-    path("replace-person", views.PersonReplaceView.as_view()),
-    path("test", views.TestView.as_view()),
+    path("trigger-task/", views.TriggerTaskView.as_view(), name="trigger-task"),
 ]
 
 if settings.DEBUG:

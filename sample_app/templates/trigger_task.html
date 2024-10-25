@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trigger Task</title>
+    <script src="https://unpkg.com/htmx.org@1.6.1"></script>
+  </head>
+  <body>
+    <h1>Trigger Task</h1>
+    <form id="trigger-task-form" method="post" hx-post="{% url 'trigger-task' %}" hx-target="#response-message" hx-swap="innerHTML">
+      {% csrf_token %}
+      <label for="price">Price:</label>
+      <input type="text" id="price" name="price" required /><br /><br />
+      <label for="quantity">Quantity:</label>
+      <input type="text" id="quantity" name="quantity" required /><br /><br />
+      <label for="discount">Discount:</label>
+      <input type="text" id="discount" name="discount" required /><br /><br />
+      <button type="submit">Trigger Task</button>
+    </form>
+    <div id="response-message"></div>
+  </body>
+</html>

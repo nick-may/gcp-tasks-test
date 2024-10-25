@@ -10,6 +10,7 @@ services:
     environment:
       - GCP_LOCATION=us-east4
       - GCP_PROJECT=my-project
+      - GOOGLE_APPLICATION_CREDENTIALS=application_default_credentials.json
     depends_on:
       db:
         condition: service_healthy
